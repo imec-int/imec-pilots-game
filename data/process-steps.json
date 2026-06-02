@@ -1,0 +1,259 @@
+{
+  "process": {
+    "name": "Certified Container Weighing",
+    "description": "Capturing the weight of full containers for IMO SOLAS VGM compliance",
+    "stakeholders": {
+      "customer": "Owner of the container, represented by the booth visitor",
+      "serviceProvider": "The company doing the weighing and issuing the weighing certificate"
+    }
+  },
+  "steps": [
+    {
+      "id": "start",
+      "name": "Start",
+      "description": "Before we start weighing your container, let us get to know each other so we can contact you back. Enter your details to book the weighing.",
+      "beginState": "Start",
+      "activity": "Booking",
+      "endState": "Booked",
+      "performedBy": "Customer",
+      "illustration": "booking",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Your name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Alex Morgan"
+        },
+        {
+          "id": "email",
+          "label": "Email address",
+          "type": "email",
+          "required": true,
+          "placeholder": "alex@company.com"
+        },
+        {
+          "id": "company",
+          "label": "Company",
+          "type": "text",
+          "required": false,
+          "placeholder": "Your organization"
+        }
+      ],
+      "event": {
+        "name": "booking.created",
+        "summary": "The weighing request enters the shared process and the shipper becomes visible to the service provider.",
+        "dataPoints": [
+          "Customer name",
+          "Customer email",
+          "Booking activity = Booking",
+          "State transition Start to Booked"
+        ]
+      }
+    },
+    {
+      "id": "container-intake",
+      "name": "Container Intake",
+      "description": "The container arrives at the weighing location. Record the container number if available and decide what should happen next.",
+      "beginState": "Booked",
+      "activity": "Intake",
+      "endState": "Intake",
+      "performedBy": "Service provider via kiosk",
+      "illustration": "intake",
+      "fields": [
+        {
+          "id": "containerNumber",
+          "label": "Container number",
+          "type": "text",
+          "required": false,
+          "placeholder": "MSCU1234566",
+          "hint": "Optional. If you enter one, the ISO 6346 control digit is checked."
+        }
+      ],
+      "quiz": {
+        "selectionMode": "single",
+        "question": "A container arrives at the weighing location. What should happen next?",
+        "choices": [
+          {
+            "id": "a",
+            "label": "Request the customer to confirm the container number"
+          },
+          {
+            "id": "b",
+            "label": "Capture the container number and associate it with the customer or owner"
+          },
+          {
+            "id": "c",
+            "label": "Contact the ocean carrier and the customer to announce that a container will be weighed"
+          },
+          {
+            "id": "d",
+            "label": "Nothing. Just move on to the next step"
+          }
+        ],
+        "correctAnswers": [
+          "b"
+        ],
+        "correctFeedback": "Correct. Intake is where the container identity gets linked to the shipper in a trustworthy way.",
+        "incorrectFeedback": "The key process-sharing move here is to capture the container identifier and associate it with the customer or owner."
+      },
+      "event": {
+        "name": "container.intake.recorded",
+        "summary": "An intake event ties the physical container to the booking so downstream actors can trust they are talking about the same asset.",
+        "dataPoints": [
+          "Container number when available",
+          "Owner reference",
+          "Activity = Intake",
+          "State transition Booked to Intake"
+        ]
+      }
+    },
+    {
+      "id": "container-weighing",
+      "name": "Container Weighing",
+      "description": "The container is weighed and a weighing certificate is prepared. The service provider generates the verified gross mass and exposes it as a process event.",
+      "beginState": "Intake",
+      "activity": "Weighing",
+      "endState": "Weighed",
+      "performedBy": "Service provider",
+      "illustration": "weighing",
+      "autoGenerate": {
+        "weightTons": {
+          "min": 10,
+          "max": 20,
+          "decimals": 1
+        }
+      },
+      "quiz": {
+        "selectionMode": "single",
+        "question": "The container is weighed. What should happen next?",
+        "choices": [
+          {
+            "id": "a",
+            "label": "The container should be stored at the weighing location awaiting payment by the customer"
+          },
+          {
+            "id": "b",
+            "label": "Since the certificate is issued to the carrier automatically, the container can be delivered at the terminal"
+          },
+          {
+            "id": "c",
+            "label": "The container can move on to the terminal, but the weight should be reported to the carrier before arriving there"
+          },
+          {
+            "id": "d",
+            "label": "Contact the ocean carrier and the customer to report the weight of the container"
+          }
+        ],
+        "correctAnswers": [
+          "c"
+        ],
+        "correctFeedback": "Correct. The certificate matters because the weight must be available to the carrier before terminal delivery becomes risky.",
+        "incorrectFeedback": "The process still has to share the weight with the carrier before the container reaches the terminal."
+      },
+      "event": {
+        "name": "container.weighed",
+        "summary": "A weighing event is issued with the measured VGM, time, and reference so the next actors can act on trusted data.",
+        "dataPoints": [
+          "Measured weight in metric tons",
+          "Weighing timestamp",
+          "Weighing reference",
+          "State transition Intake to Weighed"
+        ]
+      }
+    },
+    {
+      "id": "certificate-purchase",
+      "name": "Certificate Purchase",
+      "description": "The weight certificate can now be purchased by the customer. Answer the certificate-content question to continue the process.",
+      "beginState": "Weighed",
+      "activity": "Purchase",
+      "endState": "Purchased",
+      "performedBy": "Customer",
+      "illustration": "purchase",
+      "quiz": {
+        "selectionMode": "single",
+        "question": "Which data points should be included in the weighing result?",
+        "choices": [
+          {
+            "id": "a",
+            "label": "Weight only"
+          },
+          {
+            "id": "b",
+            "label": "Container ID, weight, timestamp and reference"
+          },
+          {
+            "id": "c",
+            "label": "All of the above with a picture of the scale"
+          },
+          {
+            "id": "d",
+            "label": "Nothing"
+          }
+        ],
+        "correctAnswers": [
+          "b"
+        ],
+        "correctFeedback": "Correct. The useful shared event is compact but traceable: container ID, weight, timestamp and reference.",
+        "incorrectFeedback": "The essential shared weighing result is container ID, weight, timestamp and reference."
+      },
+      "event": {
+        "name": "certificate.purchase.confirmed",
+        "summary": "The customer confirms the certificate purchase and the commercial side of the process becomes visible in the same journey.",
+        "dataPoints": [
+          "Customer company",
+          "Purchase confirmation",
+          "State transition Weighed to Purchased"
+        ]
+      }
+    },
+    {
+      "id": "issue-certificate",
+      "name": "Issue Certificate",
+      "description": "You did it. Your container can now be brought safely on board. Choose the best next action once the certificate exists.",
+      "beginState": "Purchased",
+      "activity": "Issue",
+      "endState": "Issued / Done",
+      "performedBy": "Shared process",
+      "illustration": "issue",
+      "quiz": {
+        "selectionMode": "single",
+        "question": "Congratulations, you have obtained a weighing certificate. What should you do now?",
+        "choices": [
+          {
+            "id": "a",
+            "label": "Send an email to the carrier to report the weight for the container"
+          },
+          {
+            "id": "b",
+            "label": "Issue an event in the ocean shipping process with the weight certificate"
+          },
+          {
+            "id": "c",
+            "label": "Nothing. Certiweight will report it to the carrier directly"
+          },
+          {
+            "id": "d",
+            "label": "Nothing. Everything now happens automatically"
+          }
+        ],
+        "correctAnswers": [
+          "b",
+          "c"
+        ],
+        "correctFeedback": "Correct. In the strongest setup the process event is issued and downstream reporting can become automated from that shared truth.",
+        "incorrectFeedback": "The core PILOTS angle is to issue a process event with the certificate so trusted automation becomes possible."
+      },
+      "event": {
+        "name": "certificate.issued",
+        "summary": "The weighing certificate becomes a shareable process event that can trigger the next operational steps across company boundaries.",
+        "dataPoints": [
+          "Certificate issued",
+          "Weight reference attached",
+          "Final state Purchased to Issued / Done"
+        ]
+      }
+    }
+  ]
+}
