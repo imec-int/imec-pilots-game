@@ -242,26 +242,13 @@ function ensureProgressBarStructure(steps) {
     }
   });
 
-  const processHeader = document.createElement("div");
-  processHeader.className = "pb-process";
-
-  const processTitleEl = document.createElement("h2");
-  processTitleEl.className = "pb-process__title";
-  processTitleEl.dataset.role = "pb-process-title";
-
-  const processDescriptionEl = document.createElement("p");
-  processDescriptionEl.className = "pb-process__description";
-  processDescriptionEl.dataset.role = "pb-process-description";
-
-  processHeader.append(processTitleEl, processDescriptionEl);
-
   const truck = document.createElement("div");
   truck.className = "pb-truck";
   truck.dataset.role = "pb-truck";
   truck.setAttribute("aria-hidden", "true");
   truck.innerHTML = '<img src="./assets/icons/truck.svg" alt="" />';
 
-  appElements.progressBar.append(processHeader, stepsWrap, truck);
+  appElements.progressBar.append(stepsWrap, truck);
   if (playPanel) {
     appElements.progressBar.append(playPanel);
   }
@@ -273,8 +260,8 @@ function ensureProgressBarStructure(steps) {
     scoreEl: null,
     mistakeEl: null,
     restartBtn: null,
-    processTitleEl,
-    processDescriptionEl,
+    processTitleEl: { textContent: "" },
+    processDescriptionEl: { textContent: "" },
     truck
   };
 }
