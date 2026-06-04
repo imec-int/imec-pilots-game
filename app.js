@@ -76,7 +76,9 @@ function onViewportChange() {
     return;
   }
 
-  render();
+  // Only reposition the truck — a full render() would destroy the focused
+  // input (the mobile keyboard triggers a resize when it opens).
+  renderProgressBar();
 }
 
 function render() {
