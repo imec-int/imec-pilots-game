@@ -831,7 +831,7 @@ function renderSummary() {
   summaryCard.querySelector('[data-action="restart"]').addEventListener("click", restartJourney);
   appElements.playPanel.replaceChildren(summaryCard);
 
-  if (isPerfectScore && !state.celebrationPlayed) {
+  if (!state.celebrationPlayed) {
     state.celebrationPlayed = true;
     requestAnimationFrame(() => launchConfetti(summaryCard));
   }
