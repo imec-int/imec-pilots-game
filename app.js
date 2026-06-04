@@ -708,7 +708,7 @@ function gradeQuiz(step, root) {
   const feedbackNode = firstElement(root, '[data-role="quiz-feedback"]');
   feedbackNode.textContent = state.feedback[step.id];
   feedbackNode.hidden = false;
-  feedbackNode.className = `feedback ${isCorrect ? "is-correct" : "is-incorrect"}`;
+  feedbackNode.className = `feedback ${isCorrect ? "is-correct feedback--pulse" : "is-incorrect"}`;
 
   if (isCorrect) {
     updateQuizChoiceStyles(root, step.id);
@@ -889,7 +889,7 @@ async function submitToFormspree() {
 
     state.submission = {
       status: "success",
-      message: "Your contact details and game result were submitted successfully. You are in the draw and the PILOTS team can follow up with updates."
+      message: ""
     };
   } catch (error) {
     state.submission = {

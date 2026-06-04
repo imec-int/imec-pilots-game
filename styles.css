@@ -924,6 +924,17 @@ input {
   background: rgba(183, 121, 31, 0.24);
 }
 
+@keyframes feedback-pulse {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.025); box-shadow: 0 0 0 6px rgba(42, 140, 104, 0.2); }
+  70%  { transform: scale(1.012); box-shadow: 0 0 0 3px rgba(42, 140, 104, 0.1); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+
+.feedback--pulse {
+  animation: feedback-pulse 0.65s ease-out forwards;
+}
+
 .action-row {
   display: flex;
   flex-wrap: wrap;
