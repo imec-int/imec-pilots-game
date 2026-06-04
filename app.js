@@ -630,16 +630,30 @@ function handleStepSubmit(step, index, root) {
     return;
   }
 
-  syncStepEvent(step);
-  state.currentStepIndex = index + 1;
-  state.isStepModalOpen = false;
+  // If a quiz was answered correctly, pause so the player can read the positive feedback
+  const hasQuiz = Boolean(step.quiz);
+  const advance = () => {
+    syncStepEvent(step);
+    state.currentStepIndex = index + 1;
+    state.isStepModalOpen = false;
 
-  if (state.currentStepIndex >= state.definition.steps.length) {
-    submitToFormspree();
+    if (state.currentStepIndex >= state.definition.steps.length) {
+      submitToFormspree();
+    }
+
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (hasQuiz) {
+    const submitBtn = root.querySelector('[data-role="next-button"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+    }
+    setTimeout(advance, 1400);
+  } else {
+    advance();
   }
-
-  render();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function validateStep(step, root) {
@@ -822,6 +836,9 @@ function renderSummary() {
   const submissionStatus = firstElement(fragment, '[data-role="submission-status"]');
   submissionStatus.textContent = state.submission.message || "Preparing booth lead submission...";
   submissionStatus.className = `submission-status ${submissionClassName(state.submission.status)}`.trim();
+
+  const boothCta = firstElement(fragment, '[data-role="booth-cta"]');
+  boothCta.hidden = false;
 
   const summaryCard = firstElement(fragment, ".summary-card");
   summaryCard.querySelector('[data-action="restart"]').addEventListener("click", restartJourney);

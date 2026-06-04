@@ -1121,6 +1121,38 @@ input {
   background: rgba(183, 121, 31, 0.22);
 }
 
+.booth-cta {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  border: 2px solid rgba(183, 121, 31, 0.5);
+  background: linear-gradient(135deg, rgba(243, 227, 202, 0.6), rgba(183, 121, 31, 0.08));
+}
+
+.booth-cta__emoji {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.booth-cta__heading {
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.booth-cta__body {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
 .loading-state {
   display: grid;
   place-items: center;
