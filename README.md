@@ -19,6 +19,8 @@ This repository contains a static HTML, CSS and JavaScript game for the PILOTS p
 - `data/process-steps.json`: editable process definition
 - `config.js`: local configuration for the Formspree endpoint
 
+Each step in `data/process-steps.json` can define an `icon` (for example `"booking.svg"` or `"booking"`) to control the icon used in both the progress bar and step card.
+
 ## Configure Formspree
 
 Edit `config.js` and set:
@@ -34,6 +36,10 @@ The app submits JSON to Formspree after the final step.
 ## Static hosting
 
 The app is designed for plain static hosting. No build pipeline is required.
+
+## Project History and Handover
+
+For implementation history, major decisions, and iteration context, see `PROJECT_CONTEXT.md`.
 
 ## Questions To Answer Before Booth Launch
 

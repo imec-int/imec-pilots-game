@@ -16,6 +16,7 @@
       "activity": "Booking",
       "endState": "Booked",
       "performedBy": "Customer",
+      "icon": "booking.svg",
       "illustration": "booking",
       "fields": [
         {
@@ -59,6 +60,7 @@
       "activity": "Intake",
       "endState": "Intake",
       "performedBy": "Service provider via kiosk",
+      "icon": "intake.svg",
       "illustration": "intake",
       "fields": [
         {
@@ -116,6 +118,7 @@
       "activity": "Weighing",
       "endState": "Weighed",
       "performedBy": "Service provider",
+      "icon": "weighing.svg",
       "illustration": "weighing",
       "autoGenerate": {
         "weightTons": {
@@ -170,6 +173,7 @@
       "activity": "Purchase",
       "endState": "Purchased",
       "performedBy": "Customer",
+      "icon": "purchase.svg",
       "illustration": "purchase",
       "quiz": {
         "selectionMode": "single",
@@ -216,6 +220,7 @@
       "activity": "Issue",
       "endState": "Issued / Done",
       "performedBy": "Shared process",
+      "icon": "issue.svg",
       "illustration": "issue",
       "quiz": {
         "selectionMode": "single",

@@ -40,25 +40,40 @@
           </p>
         </div>
         <div class="hero__summary">
-          <span class="hero__meta-label">Use Case</span>
-          <strong>Certified Container Weighing</strong>
+          <span class="hero__meta-label">Game Stats</span>
+          <div class="hero__controls" aria-label="Game stats and controls">
+            <div class="hero-stat" id="header-score" hidden>
+              <span>Score</span>
+              <strong>-</strong>
+            </div>
+            <div class="hero-stat hero-stat--mistakes" id="header-mistakes" hidden>
+              <span>Mistakes</span>
+              <strong>-</strong>
+            </div>
+            <button type="button" class="button button--primary hero-restart" id="header-restart">
+              Restart
+            </button>
+          </div>
         </div>
       </header>
 
-      <nav class="progress-bar" id="progress-bar" aria-label="Process steps"></nav>
-
-      <main class="layout" id="app">
+      <div class="progress-bar" id="progress-bar" aria-label="Process steps">
         <section class="play-panel" id="play-panel" aria-live="polite">
           <div class="loading-state">
             <div class="loading-state__pulse"></div>
             <p>Loading process journey...</p>
           </div>
         </section>
-      </main>
+      </div>
     </div>
 
     <template id="step-template">
       <article class="card step-card">
+        <div class="step-card__modal-actions">
+          <button type="button" class="button button--ghost step-modal-close" data-action="close-step-modal" aria-label="Close step popover">
+            Close
+          </button>
+        </div>
         <div class="card__header">
           <div class="step-card__heading">
             <div class="step-card__icon-badge" data-role="step-icon"></div>
@@ -102,22 +117,6 @@
           </div>
         </form>
       </article>
-
-      <aside class="card events-card">
-        <div class="card__header card__header--tight">
-          <div>
-            <p class="section-label">Event Feed</p>
-            <h3>What gets shared now?</h3>
-          </div>
-          <button type="button" class="button button--ghost event-toggle" data-role="event-toggle" aria-expanded="false">
-            Show
-          </button>
-        </div>
-        <div data-role="event-content" hidden>
-          <div class="event-box" data-role="current-event"></div>
-          <div class="event-history" data-role="event-history"></div>
-        </div>
-      </aside>
     </template>
 
     <template id="summary-template">
@@ -142,6 +141,11 @@
         </div>
       </article>
     </template>
+
+    <div class="step-modal" id="step-modal" hidden>
+      <div class="step-modal__backdrop" data-action="close-step-modal"></div>
+      <div class="step-modal__dialog" id="step-modal-content" role="dialog" aria-modal="true" aria-label="Step question and data entry"></div>
+    </div>
 
     <script src="./config.js"></script>
     <script src="./app.js" type="module"></script>
