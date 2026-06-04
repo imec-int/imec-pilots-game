@@ -236,11 +236,26 @@ input {
   padding: 16px 22px 18px;
   min-height: calc(100vh - 210px);
   position: relative;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   box-shadow: 0 6px 18px rgba(21, 49, 64, 0.08);
+}
+
+.progress-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("./assets/process-space-background.png") center 50px / 55% auto no-repeat;
+  opacity: 0.36;
+  pointer-events: none;
+}
+
+.progress-bar > * {
+  position: relative;
+  z-index: 1;
 }
 
 .pb-process {
@@ -1284,6 +1299,10 @@ input {
 @media (max-width: 640px) {
   .shell {
     width: min(calc(100vw - 12px), 560px);
+  }
+
+  .progress-bar::before {
+    display: none;
   }
 
   .hero,
