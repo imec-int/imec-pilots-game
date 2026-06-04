@@ -607,20 +607,6 @@ function handleStepSubmit(step, index, root) {
     node.removeAttribute("aria-invalid");
   });
 
-  const validationError = validateStep(step, root);
-  if (validationError) {
-    errorNode.textContent = validationError;
-    errorNode.classList.add("is-visible");
-    return;
-  }
-
-  const quizResult = gradeQuiz(step, root);
-  if (quizResult === false) {
-    return;
-  }
-
-  // If a quiz was answered correctly, pause so the player can read the positive feedback
-  const hasQuiz = Boolean(step.quiz);
   const advance = () => {
     syncStepEvent(step);
     state.currentStepIndex = index + 1;
@@ -634,13 +620,29 @@ function handleStepSubmit(step, index, root) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (hasQuiz) {
-    const submitBtn = root.querySelector('[data-role="next-button"]');
-    if (submitBtn) {
-      submitBtn.disabled = true;
+  // If correct feedback is already showing, the user is pressing Continue to confirm — advance now
+  if (step.quiz) {
+    const feedbackNode = firstElement(root, '[data-role="quiz-feedback"]');
+    if (feedbackNode && feedbackNode.classList.contains("is-correct")) {
+      advance();
+      return;
     }
-    setTimeout(advance, 1400);
-  } else {
+  }
+
+  const validationError = validateStep(step, root);
+  if (validationError) {
+    errorNode.textContent = validationError;
+    errorNode.classList.add("is-visible");
+    return;
+  }
+
+  const quizResult = gradeQuiz(step, root);
+  if (quizResult === false) {
+    return;
+  }
+
+  // No quiz — advance immediately; quiz correct — feedback shown, wait for user to press Continue
+  if (!step.quiz) {
     advance();
   }
 }
