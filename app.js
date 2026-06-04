@@ -824,10 +824,6 @@ function renderSummary() {
   const summaryGrid = firstElement(fragment, '[data-role="summary-grid"]');
   summaryGrid.replaceChildren(createCapturedDataTile(answers));
 
-  const submissionStatus = firstElement(fragment, '[data-role="submission-status"]');
-  submissionStatus.textContent = state.submission.message || "Preparing booth lead submission...";
-  submissionStatus.className = `submission-status ${submissionClassName(state.submission.status)}`.trim();
-
   const boothCta = firstElement(fragment, '[data-role="booth-cta"]');
   boothCta.hidden = false;
 
